@@ -71,9 +71,7 @@ A folder named `myblog` will appear. Create your contents in this folder.
 
 ### Create a repository
 
-In GitHub, create a new blank repository. It can be either public or private. Clone the repository to your local machine. Copy the whole `myblog` folder into the repository. Now the root will have only one subfolder. You may want to create a `README` file and a `.gitignore` file. `node_modules` folder is not suggested to be pushed into the repo.
-
-If you use the default package from `hexo-cli`, you don't need to push `package.json` and `package-lock.json` file. If other plugins are installed, please push these two files.
+In GitHub, create a new blank repository. It can be either public or private. Clone the repository to your local machine. Copy the whole `myblog` folder into the repository. Now the root will have only one subfolder. You may want to create a `README` file and a `.gitignore` file. `node_modules` folder is not suggested to be pushed into the repo. You need to push `package.json` and `package-lock.json` file.
 
 A suggested `.gitignore` file should be like this
 

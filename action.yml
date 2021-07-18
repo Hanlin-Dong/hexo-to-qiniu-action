@@ -32,7 +32,7 @@ runs:
       shell: bash
 
     - name: init _blog_ dir
-      run: hexo init _blog_
+      run: mkdir _blog_
       shell: bash
     
     - name: copy the files from the previous head to _blog_ folder
