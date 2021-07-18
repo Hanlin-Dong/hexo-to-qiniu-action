@@ -32,7 +32,11 @@ runs:
       shell: bash
 
     - name: init _blog_ dir
-      run: mkdir _blog_
+      run: mkdir _blog_ _temp_
+      shell: bash
+    
+    - name: copy current files to temp folder
+      run: 'cp -rf master/${{ inputs.base-folder }}/* _temp_/'
       shell: bash
 
     - name: checkout the previous HEAD
@@ -54,13 +58,8 @@ runs:
       shell: bash
       working-directory: _blog_
     
-    - name: checkout the current HEAD
-      run: git checkout master
-      shell: bash
-      working-directory: master
-    
-    - name: copy the current files to the _blog_ folder
-      run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
+    - name: copy the temp files to the _blog_ folder
+      run: cp -rf _temp_/* _blog_/
       shell: bash
     
     - name: run the deploy file
