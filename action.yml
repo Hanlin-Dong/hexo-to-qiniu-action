@@ -34,11 +34,6 @@ runs:
     - name: init _blog_ dir
       run: hexo init _blog_
       shell: bash
-
-    - name: checkout the previous HEAD
-      run: git checkout HEAD^
-      shell: bash
-      working-directory: master
     
     - name: copy the files from the previous head to _blog_ folder
       run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
@@ -48,20 +43,6 @@ runs:
       run: npm install
       shell: bash
       working-directory: _blog_
-    
-    - name: generate the public files of the previous commit
-      run: hexo generate
-      shell: bash
-      working-directory: _blog_
-    
-    - name: checkout the current HEAD
-      run: git checkout master
-      shell: bash
-      working-directory: master
-    
-    - name: copy the current files to the _blog_ folder
-      run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
-      shell: bash
     
     - name: run the deploy file
       run: node $GITHUB_ACTION_PATH/index.js ${{ inputs.bucket }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.base-folder }} ${{ inputs.domain }} ${{ inputs.sub-domain }} 
