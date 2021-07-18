@@ -47,3 +47,7 @@ runs:
     - name: run the deploy file
       run: node $GITHUB_ACTION_PATH/index.js ${{ inputs.bucket }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.base-folder }} ${{ inputs.domain }} ${{ inputs.sub-domain }} 
       shell: bash
+    
+    - name: clean the directory
+      run: rm -rf _blog_
+      shell: bash
