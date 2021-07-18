@@ -41,7 +41,7 @@ runs:
       working-directory: master
     
     - name: copy the files from the previous head to _blog_ folder
-      run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
+      run: '[ -d master/${{ inputs.base-folder }} ] && cp -rf master/${{ inputs.base-folder }}/* _blog_/'
       shell: bash
     
     - name: install all dependencies in _blog_ folder
