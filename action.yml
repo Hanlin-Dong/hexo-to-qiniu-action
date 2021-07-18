@@ -32,7 +32,7 @@ runs:
       shell: bash
 
     - name: init _blog_ dir
-      run: hexo init _blog_
+      run: mkdir _blog_
       shell: bash
 
     - name: checkout the previous HEAD
@@ -45,7 +45,7 @@ runs:
       shell: bash
     
     - name: install all dependencies in _blog_ folder
-      run: npm install
+      run: npm ci
       shell: bash
       working-directory: _blog_
     
