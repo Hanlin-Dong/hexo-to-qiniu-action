@@ -98,6 +98,7 @@ let run = async function (relativePaths) {
         console.log(`Refreshing the above urls.`)
         await refresh(urls);
     }
+    await refresh([domain]);
 }
 
 run(relativePaths);
