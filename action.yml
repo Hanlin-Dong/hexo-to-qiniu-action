@@ -1,0 +1,68 @@
+name: 'Deploy Hexo blog to qiniu cloud'
+author: Hanlin Dong (self@hanlindong.com)
+description: 'On each push, the Hexo.io generated static files can be deployed to qiniu either incrementally or fully. The cdn will be refreshed automatically.'
+inputs:
+  bucket:
+    description: 'Name of the qiniu bucket to deploy'
+    required: true
+  access-key:
+    description: 'Access-key of qiniu'
+    required: true
+  secret-key:
+    description: 'Secret-key of qiniu'
+    required: true
+  base-folder:
+    description: 'The hexo blog must be wrapped in a folder as if it is created with "hexo init $base-folder". Provide the name of this folder'
+    required: true
+  domain:
+    description: 'Your website domain. e.g.: http://abc.io'
+    required: true
+  sub-domain:
+    description: 'An identifier after domain. It should be identical to the `root` without / in the Hexo config file. The result url will be like: http://abc.io/sub-doman/xxx/'
+    required: true
+  hexo-cli-version:
+    description: 'The hexo cli version in your local env. Default to 4.3.0'
+    required: true
+    default: '4.3.0'
+runs:
+  using: 'composite'
+  steps:
+    - name: install hexo-cli
+      run: npm install -g hexo-cli@${{ inputs.hexo-cli-version }}
+      shell: bash
+
+    - name: init _blog_ dir
+      run: hexo init _blog_
+      shell: bash
+
+    - name: checkout the previous HEAD
+      run: git checkout HEAD^
+      shell: bash
+      working-directory: master
+    
+    - name: copy the files from the previous head to _blog_ folder
+      run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
+      shell: bash
+    
+    - name: install all dependencies in _blog_ folder
+      run: npm install
+      shell: bash
+      working-directory: _blog_
+    
+    - name: generate the public files of the previous commit
+      run: hexo generate
+      shell: bash
+      working-directory: _blog_
+    
+    - name: checkout the current HEAD
+      run: git checkout master
+      shell: bash
+      working-directory: master
+    
+    - name: copy the current files to the _blog_ folder
+      run: cp -rf master/${{ inputs.base-folder }}/* _blog_/
+      shell: bash
+    
+    - name: run the deploy file
+      run: node $GITHUB_ACTION_PATH/index.js ${{ inputs.bucket }} ${{ inputs.access-key }} ${{ inputs.secret-key }} ${{ inputs.base-folder }} ${{ inputs.domain }} ${{ inputs.sub-domain }} 
+      shell: bash
