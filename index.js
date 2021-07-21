@@ -95,8 +95,12 @@ let run = async function (relativePaths) {
             console.log(`Pushing path ${truePath}: to key: ${key}, target url is ${url}`);
             await push(key, truePath);
         }
-        console.log(`Refreshing the above urls.`)
-        await refresh(urls);
+        if (urls.length !== 0) {
+            console.log(`Refreshing the above urls.`);
+            await refresh(urls);
+        } else {
+            console.log(`No need to push.`)
+        }
     }
     console.log('Refreshing index urls.')
     await refresh([domain, domain + '/']);
